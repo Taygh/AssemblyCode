@@ -1,0 +1,26 @@
+#This program uses the ANNA assembly language to program
+#a simulated exclsuive-or logic gate (bitwise).
+
+lli r1 0 #value 1
+lui r1 0
+lli r2 0 #value 2
+lui r2 0
+lli r3 0 #result
+lui r3 0
+in r1
+in r2
+bgz r1 &CHECK2 #check first value for negative/0
+addi r3 r3 -1
+out r3
+.halt
+CHECK2: bgz r2 &NEXT #check second value for negative/0
+addi r3 r3 -1
+out r3
+.halt
+NEXT: not r4 r1 #A' 
+and r5 r4 r2 #A' and B
+not r6 r2 #B'
+and r7 r1 r6 #B' and A
+or r3 r7 r5 # (A'B) + (AB')
+out r3
+.halt  

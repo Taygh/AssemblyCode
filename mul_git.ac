@@ -1,0 +1,27 @@
+#This program uses the ANNA assembly language to create a 
+#multiplication calculator (positive values only)
+
+lli r1 0
+lui r1 0
+lli r2 0
+lui r2 0
+lli r3 0 #loop max
+lli r5 1 #i
+lui r5 0
+lli r6 0
+lui r6 0
+in r1
+in r2
+bgz r1 &CHECK2 #check first value for negative
+.halt
+CHECK2: bgz r2 &NEXT #check second value for negative
+.halt
+NEXT: addi r3 r2 0 #r3 holds times something should be added
+addi r6 r1 0
+LOOP: add r6 r6 r1 #add number to itself and store
+addi r5 r5 1
+sub r4 r3 r5 #loop max - i
+bgz r4 &LOOP
+out r6
+.halt
+

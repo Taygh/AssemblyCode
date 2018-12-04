@@ -1,0 +1,66 @@
+#This program uses the ANNA assembly langauge to find
+#the second largest value in a positive data set. It prints 0
+#for only 1 value or the only same value repeated. A negative
+#number will end the input of values. 
+
+lli r1 &MEM #addresses memory
+lui r1 &MEM
+lli r5 &MEM #original address memory
+lui r5 &MEM
+lli r4 0 #i = 0
+lui r4 0
+lli r6 0 #hold current most value
+lui r6 0
+lli r7 0
+lui r7 0
+IN:lli r2 0 #gets num from input
+lui r2 0
+in r2
+bez r4 &CHECKEND
+TOMEM: bgz r2 &MEM
+bez r2 &MEM
+SCAN: sub r1 r1 r5 #This will get next two numbers to compare
+lw r3 r1 0
+addi r4 r4 -1
+
+sub r2 r3 r7
+bez r2 &RETURN
+
+sub r2 r3 r6
+bgz r2 &NEWSEC
+bez r2 &NEWSEC
+
+RETURN:bgz r4 &SCAN #determine if at end of loop for second 
+out r6
+.halt
+
+NEWSEC: sub r6 r6 r6
+add r6 r6 r3
+bez r0 &MAX
+
+MAX: sub r2 r3 r7
+bgz r2 &NEWMAX
+bez r0 &RETURN
+
+NEWMAX: sub r6 r6 r6
+add r6 r6 r7
+sub r7 r7 r7
+add r7 r7 r3
+
+bez r0 &RETURN
+
+STR: sw r2 r1 0 #store number and i++
+add r1 r1 r5
+addi r4 r4 1
+bez r0 &IN
+
+CHECKEND: addi r2 r2 0
+bgz r2 &TOMEM
+bez r2 &TOMEM
+out r4
+.halt
+
+MEM: .fill 0 #allocate one new memory slot
+bez r0 &STR 
+
+
